@@ -1,48 +1,35 @@
-// Firebase authentication
-document.addEventListener("DOMContentLoaded", function () {
-    // Reference to the login button
-    const loginButton = document.getElementById("google-login");
+document.getElementById("google-login").addEventListener("click", () => {
+    const provider = new firebase.auth.GoogleAuthProvider();
+    
+    auth.signInWithPopup(provider)
+        .then(result => {
+            const user = result.user;
+            const userEmail = user.email;
 
-    if (loginButton) {
-        loginButton.addEventListener("click", function () {
-            // ✅ Create a new GoogleAuthProvider instance
-            const provider = new firebase.auth.GoogleAuthProvider();
+            // ✅ Check Firestore for user role
+            db.collection("users").doc(userEmail).get().then(doc => {
+                if (doc.exists) {
+                    const role = doc.data().role;
+                    console.log(`Logged in as ${role}`);
 
-            firebase.auth().signInWithPopup(provider)
-                .then((result) => {
-                    console.log("User signed in:", result.user);
-                    alert("Login successful!");
+                    if (role === "admin") {
+                        window.location.href = "admin-dashboard.html"; // Redirect admin
+                    } else if (role === "user") {
+                        window.location.href = "user-dashboard.html"; // Redirect normal user
+                    }
+                } else {
+                    // 🚨 Unauthorized user - Logout
+                    alert("Access Denied! You are not authorized.");
+                    auth.signOut().then(() => {
+                        window.location.href = "index.html"; // Redirect to login
+                    });
+                }
+            }).catch(error => {
+                console.error("Error checking user role:", error);
+            });
 
-                    // Check if the user is an admin (modify as needed)
-                    checkIfAdmin(result.user);
-                })
-                .catch((error) => {
-                    console.error("Error during login:", error.message);
-                    alert("Login failed. Try again.");
-                });
+        })
+        .catch(error => {
+            console.error("Login Error:", error);
         });
-    }
-});
-
-// ✅ Function to check if user is an admin (Modify this logic based on your admin emails)
-function checkIfAdmin(user) {
-    const allowedAdmins = ["admin1@example.com", "admin2@example.com"]; // Change this list
-
-    if (allowedAdmins.includes(user.email)) {
-        window.location.href = "admin-dashboard.html"; // Redirect admin to admin dashboard
-    } else {
-        window.location.href = "dashboard.html"; // Redirect normal users
-    }
-}
-
-
-
-// ✅ Firebase Logout
-document.getElementById("logout").addEventListener("click", function () {
-    firebase.auth().signOut().then(() => {
-        console.log("User signed out successfully");
-        window.location.href = "index.html"; // Redirect after logout
-    }).catch((error) => {
-        console.error("Error during logout:", error.message);
-    });
 });
