@@ -6,6 +6,9 @@ document.getElementById("google-login").addEventListener("click", () => {
             const user = result.user;
             const userEmail = user.email;
 
+            // ✅ Ensure Firestore is initialized
+            const db = firebase.firestore();
+
             // ✅ Check Firestore for user role
             db.collection("users").doc(userEmail).get().then(doc => {
                 if (doc.exists) {
