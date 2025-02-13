@@ -1,8 +1,4 @@
-// ✅ Initialize Firestore
-const db = firebase.firestore();
-const auth = firebase.auth();
-
-// ✅ Google Login Event Listener
+// ✅ Ensure Firebase is initialized from firebase-config.js
 document.getElementById("google-login").addEventListener("click", () => {
     const provider = new firebase.auth.GoogleAuthProvider();
     
