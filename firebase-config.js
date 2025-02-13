@@ -10,7 +10,6 @@ const firebaseConfig = {
 
 // ✅ Initialize Firebase
 firebase.initializeApp(firebaseConfig);
-console.log("🔥 Firebase initialized successfully!");
-
-// ✅ Firebase Auth
 const auth = firebase.auth();
+const db = firebase.firestore();
+console.log("Firebase initialized successfully!");
