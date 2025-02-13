@@ -1,6 +1,6 @@
 // ✅ Firebase Config
 const firebaseConfig = {
-  apiKey: "IzaSyBpjcP6fn7G45SBE_CEPECkND_OIfA6Gh4",
+  apiKey: "AIzaSyBpjcP6fn7G45SBE_CEPECkND_OIfA6Gh4",
   authDomain: "authtest-f29b6.firebaseapp.com",
   projectId: "authtest-f29b6",
   storageBucket: "authtest-f29b6.firebasestorage.app",
