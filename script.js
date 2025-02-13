@@ -34,3 +34,15 @@ function checkIfAdmin(user) {
         window.location.href = "dashboard.html"; // Redirect normal users
     }
 }
+
+
+
+// ✅ Firebase Logout
+document.getElementById("logout").addEventListener("click", function () {
+    firebase.auth().signOut().then(() => {
+        console.log("User signed out successfully");
+        window.location.href = "index.html"; // Redirect after logout
+    }).catch((error) => {
+        console.error("Error during logout:", error.message);
+    });
+});
